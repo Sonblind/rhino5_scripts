@@ -22,10 +22,10 @@ def Fragmentation():
             stepV = (vDomain[1] - vDomain[0]) / (columns-1)
             paramV = vDomain[0] + (stepV * j)
 
-            vertices = setTriangleVertices(surface_id, paramU, paramV, stepU, stepV)
+            vertices = SetTriangleVertices(surface_id, paramU, paramV, stepU, stepV)
             if vertices: rs.AddPolyline(vertices, None)
 
-def setTriangleVertices(surface_id, paramU, paramV, stepU, stepV):
+def SetTriangleVertices(surface_id, paramU, paramV, stepU, stepV):
     #vertice1
     pointScale = 0
     srfNormal = UnitizedSurfaceNormal(surface_id, [paramU, paramV])
@@ -45,13 +45,13 @@ def setTriangleVertices(surface_id, paramU, paramV, stepU, stepV):
     srfNormal = UnitizedSurfaceNormal(surface_id, [paramU, paramV + stepV])
     srfNormal = rs.VectorScale(srfNormal, pointScale)
     pointOnSrf = rs.EvaluateSurface(surface_id, paramU, paramV + stepV)
-    vertice2 = rs.VectorAdd(pointOnSrf, srfNormal)
+    vertice3 = rs.VectorAdd(pointOnSrf, srfNormal)
 
     return [vertice1, vertice2, vertice3, vertice1]
 
 def UnitizedSurfaceNormal(srf, uvParams):
     srfNormal = rs.SurfaceNormal(srf, uvParams)
-    rs.VectorUnitize(srfNormal)
+    return rs.VectorUnitize(srfNormal)
 
 if __name__ == "__main__":
     Fragmentation()
